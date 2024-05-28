@@ -1,5 +1,6 @@
 number = input("Введите число: ")
-n =int(number)
+n = int(number)
+
 def fizz_buzz (n):
     for n in range(1, n+1):
         if (n % 5 == 0) and (n % 3 == 0):

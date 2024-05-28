@@ -1,8 +1,7 @@
 import math
-#side = input ("Введите сторону квадрата: ")
-#a = int(side)
+side = float(input("Введите сторону квадрата: "))
+
 def square(a):
     return math.ceil(a*a)
-print(square(3))
-print(square(1.1))
 
+print(square(side))

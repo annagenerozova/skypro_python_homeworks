@@ -1,6 +1,5 @@
 is_year_leap = input("Год: ")
-year= int(is_year_leap)
-#for y in is_year_leap:
+year = int(is_year_leap)
 
 def is_year_leap():
     if (year % 4 == 0):
