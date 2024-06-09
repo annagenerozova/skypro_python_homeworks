@@ -8,10 +8,11 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 driver.maximize_window()
 
 driver.get("http://uitestingplayground.com/classattr")
-for x in range (3):
-    blue_button_locator = 'button.btn-primary'
-    button= driver.find_element(By.CSS_SELECTOR, blue_button_locator).click()
-    trigger_button_locator = 'alert("Primary button pressed")' # Локатор кнопки, вызывающей alert
-    driver.find_element(By.CSS_SELECTOR, trigger_button_locator).click()
 
-sleep(10)
+for _ in range(3):
+    driver.find_element(By.CSS_SELECTOR, "button.btn-primary").click()
+    sleep(2)
+    driver.switch_to.alert.accept()
+
+sleep(3)
+

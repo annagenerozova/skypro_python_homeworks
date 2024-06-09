@@ -14,4 +14,6 @@ modal_button_locator = '[class="modal-footer"]'
 button= driver.find_element(By.CSS_SELECTOR, modal_button_locator).click()
 
 sleep(5)
+
 driver.quit()
+

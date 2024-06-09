@@ -22,4 +22,6 @@ button_locator = '[class="radius"]'
 button= driver.find_element(By.CSS_SELECTOR, button_locator).click()
 
 sleep(5)
+
 driver.quit()
+

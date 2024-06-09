@@ -9,6 +9,7 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 driver.maximize_window()
 
 driver.get("http://the-internet.herokuapp.com/add_remove_elements/")
+
 for x in range (5):
     button_locator = '[onclick="addElement()"]'
     button= driver.find_element(By.CSS_SELECTOR, button_locator).click()
@@ -16,4 +17,5 @@ for x in range (5):
 
 print(len(delete_buttons))
 
-sleep(15)
+sleep(5)
+

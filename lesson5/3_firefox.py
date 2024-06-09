@@ -8,10 +8,13 @@ driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()
 driver.maximize_window()
 
 driver.get("http://uitestingplayground.com/classattr")
-for x in range (3):
-    blue_button_locator = 'button.btn-primary'
-    button= driver.find_element(By.CSS_SELECTOR, blue_button_locator).click()
-    sleep(3)
 
-sleep(10)
+for _ in range(3):
+    driver.find_element(By.CSS_SELECTOR, "button.btn-primary").click()
+    sleep(2)
+    driver.switch_to.alert.accept()
+
+sleep(3)
+
 driver.quit()
+
