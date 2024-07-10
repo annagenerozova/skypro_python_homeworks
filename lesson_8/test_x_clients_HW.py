@@ -36,10 +36,11 @@ def test_get_one_emploee():
     #создание сотрудника 
     new_emploee = api2.create_employee(new_id)
     #Обращаемся к сотруднику
-    id_emploee= new_emploee["id"]
+    id_emploee= new_emploee.json()['id']
     emploee = api2.get_employee(id_emploee)
     
     #Проверим id нового сотрудника:
+    assert emploee['id'] == id_emploee
     assert emploee["firstName"] =="Anna"
     assert emploee["lastName"] == "Generozova"
 
@@ -52,7 +53,7 @@ def test_edit_employee():
     #создание сотрудника 
     new_employee = api2.create_employee(new_id)
 
-    id_employee = new_employee["id"]
+    id_employee = new_employee.json()["id"]
 
     update = api2.edit(id_employee)
     assert update["id"] == id_employee

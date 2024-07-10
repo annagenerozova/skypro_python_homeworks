@@ -46,12 +46,7 @@ class EmployeeApi:
         resp = requests.get(self.url + '/employee/' + str(id))
         return resp.json()
     
-    def edit(self, new_lname ="Sokolova", email = "test123@mail.ru", url ='https://t.me/gener_ann', 
-             phone ="89218308966", isActive = True):
-        my_headers = {}
-        # Авторизуемся как пользователь
-        my_headers["x-client-token"] = self.get_token()
-        # Вызываем словарь и кладем в него описание компании
+    def edit(self, id, new_lname ="Sokolova", email = "test123@mail.ru", url ='https://t.me/gener_ann', phone ="89218308966", isActive = True):
         employee = {
             "lastName": new_lname,
             "email": email,
@@ -59,7 +54,7 @@ class EmployeeApi:
             "phone": phone,
             "isActive": isActive
             }
-        # Метод отправляет запрос по URL, передает заголовки и тело
-        resp = requests.post(self.url + '/employee',json=employee, headers=my_headers)
-        # Результат вернется в JSON, мы его прокинем в тест
+        my_headers = {}
+        my_headers["x-client-token"] = self.get_token()
+        resp = requests.patch(self.url + '/employee/' + str(id) ,json=employee, headers=my_headers)
         return resp()
