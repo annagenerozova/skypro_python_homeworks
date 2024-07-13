@@ -1,19 +1,21 @@
 import requests
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
 
-class EmployeeApi: 
+class EmployeeTable: 
+    __scripts = {
+        "select": text("select * from employee where company_id = :id_company")
+    }
     # Инициализация 
-    def __init__(self, url) -> None:
-        self.url = url
+    def __init__(self, connection_string):
+        self.db = create_engine(connection_string)
+        
     
-    def get_token(self, user='bloom', password='fire-fairy'):
-        creds = {
-            "username": user,
-            "password": password
-        } 
-        resp = requests.post(self.url + '/auth/login', json=creds)
-        return resp.json()["userToken"]
-    
-    # список сотрудников компании 
+    #список сотрудников компании
+    def get_employees(self):
+        return self.db.execute(self.__scripts["select"]).fetchall()
+          
+# список сотрудников компании 
     def get_staff_list(self, id):
         company = {
             'company': str(id)
@@ -46,17 +48,16 @@ class EmployeeApi:
         resp = requests.get(self.url + '/employee/' + str(id))
         return resp.json()
     
-    def edit(self, new_id, new_lname ="Sokolova", email = "test123@mail.ru", 
+    def edit(self, id, new_lname ="Sokolova", email = "test123@mail.ru", 
              url ="https://instagram.com/_anna.roze", phone ="89218308966", isActive = True):
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
         employee = {
             "lastName": new_lname,
             "email": email,
             "url": url,
             "phone": phone,
             "isActive": isActive
-        }
-        resp = requests.patch(self.url + '/employee/' + str(new_id) ,json=employee, headers=my_headers)
-        return resp
-    
+            }
+        my_headers = {}
+        my_headers["x-client-token"] = self.get_token()
+        resp = requests.patch(self.url + '/employee/' + str(id) ,json=employee, headers=my_headers)
+        return resp()

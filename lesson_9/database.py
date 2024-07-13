@@ -1,13 +1,24 @@
 import requests
 from CompanyApi import CompanyApi
+from EmployeeTable import EmployeeTable
 from EmployeeApi import EmployeeApi
 
 api1 = CompanyApi("https://x-clients-be.onrender.com")
 api2 = EmployeeApi("https://x-clients-be.onrender.com")
- # Проверка получения списка компаний
-def test_get_companies():
-    body = api1.get_company_list()
-    assert len(body) > 0
+db = EmployeeTable("postgresql://x_clients_db_3fmx_user:mzoTw2Vp4Ox4NQH0XKN3KumdyAYE31uq@dpg-cour99g21fec73bsgvug-a.oregon-postgres.render.com/x_clients_db_3fmx")
+
+# Проверка получения списка компаний
+def test_get_employee():
+    #Создаем компанию
+    name = "VS Code"
+    descr = "IDE"
+    result = api1.create_company(name, descr)
+    new_id = result["id"]
+    #список сотрудников в компании 
+    api_result= api2.get_staff_list(new_id)
+    db_result = db.get_employees(new_id)
+    assert len(db_result) >= 0
+    assert len(api_result) == len(db_result)
 
 
 def test_get_staff():
@@ -17,7 +28,7 @@ def test_get_staff():
     result = api1.create_company(name, descr)
     new_id = result["id"]
     #список сотрудников в компании 
-    body1 = api2.get_staff_list(new_id) #x = 0
+    body1 = db.get_employee(new_id) #x = 0
     #создание сотрудника 
     employee = api2.create_employee(new_id)
     employee_id = employee.json()['id']
@@ -54,7 +65,7 @@ def test_edit_employee():
     new_employee = api2.create_employee(new_id)
 
     id_employee = new_employee.json()["id"]
-
+    #изменение сотрудника 
     update = api2.edit(id_employee)
     assert update["id"] == id_employee
     assert update["lastName"] == "Sokolova"
