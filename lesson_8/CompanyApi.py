@@ -32,5 +32,3 @@ class CompanyApi:
     def get_company(self, id):
         resp = requests.get(self.url + '/company/' + str(id))
         return resp.json()
-    
-    

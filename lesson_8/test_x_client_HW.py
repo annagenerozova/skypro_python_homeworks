@@ -67,7 +67,3 @@ def test_edit_employee():
     assert update["isActive"] == True
 
 
-
-
-
-
