@@ -32,5 +32,9 @@ class CompanyApi:
     def get_company(self, id):
         resp = requests.get(self.url + '/company/' + str(id))
         return resp.json()
-
     
+    def get_delete(self, id):
+        my_headers = {}
+        my_headers["x-client-token"] = self.get_token()
+        resp = requests.get(self.url + '/company/delete/' + str(id),headers=my_headers )
+        return resp.json()
