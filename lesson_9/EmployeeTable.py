@@ -1,63 +1,48 @@
 import requests
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
-
+ 
 class EmployeeTable: 
     __scripts = {
-        "select": text("select * from employee where company_id = :id_company")
+        "select": text("select * from employee where company_id = :id_company"),
+        "insert": text("""
+        INSERT INTO employee (company_id, first_name,last_name,middle_name, email,avatar_url , phone, birthdate, is_active)
+        VALUES (:id_company, 'Anna', 'Generozova', 'Dmitrievna', '"test@mail.ru"', 'https://t.me/gener_anna','89218963258','1999-04-11', True)
+        RETURNING id
+                       """),
+        "select by id": text("select * from employee where id =:select_id "),
+        "delete company": text("delete from company where id =:id_to_delete"),
+        "delete employee": text("delete from employee where id =:id_employee"),
+        "edit":text ("""
+        UPDATE employee SET last_name = 'Sokolova',
+        phone = '89218308966', email = 'test123@mail.ru', avatar_url = 'https://instagram.com/_anna.roze'
+        WHERE id = :employee_id
+        RETURNING id, first_name, last_name, middle_name, email, avatar_url, phone, birthdate, is_active
+        """)
     }
+    
     # Инициализация 
     def __init__(self, connection_string):
         self.db = create_engine(connection_string)
-        
     
     #список сотрудников компании
-    def get_employees(self):
-        return self.db.execute(self.__scripts["select"]).fetchall()
-          
-# список сотрудников компании 
-    def get_staff_list(self, id):
-        company = {
-            'company': str(id)
-        }
-        resp = requests.get(self.url + '/employee' ,params=company )
-        return resp.json()
+    def get_employees(self,id):
+        return self.db.execute(self.__scripts["select"],id_company=id).fetchall()    
     
     #добавление сотрудника 
-    def create_employee(self, companyId, firstName ="Anna", lastName ="Generozova" , middleName= "Dmitrievna", 
-                        email = "test@mail.ru", url ='https://t.me/gener_anna', phone ="89218305722", 
-                        birthdate ='1999-04-11', isActive = True):
-        employee = {
-                "id": 0,
-                "firstName": firstName,
-                "lastName": lastName,
-                "middleName": middleName,
-                "companyId": companyId,
-                "email": email,
-                "url": url,
-                "phone": phone,
-                "birthdate": birthdate,
-                "isActive": isActive
-            }
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
-        resp = requests.post(self.url + '/employee',json=employee, headers=my_headers)
-        return resp
+    def create_employee(self,id):
+        return self.db.execute(self.__scripts["insert"],id_company=id).fetchone()
     
-    def get_employee(self, id):
-        resp = requests.get(self.url + '/employee/' + str(id))
-        return resp.json()
+    #получение сотрудника по id
+    def get_employee_id(self, id):
+        return self.db.execute(self.__scripts["select by id"], select_id = id).fetchone()
+
+    def delete(self, id):
+        self.db.execute(self.__scripts["delete company"], id_to_delete = id)
     
-    def edit(self, id, new_lname ="Sokolova", email = "test123@mail.ru", 
-             url ="https://instagram.com/_anna.roze", phone ="89218308966", isActive = True):
-        employee = {
-            "lastName": new_lname,
-            "email": email,
-            "url": url,
-            "phone": phone,
-            "isActive": isActive
-            }
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
-        resp = requests.patch(self.url + '/employee/' + str(id) ,json=employee, headers=my_headers)
-        return resp()
+    def delete_emp(self, id):
+        self.db.execute(self.__scripts["delete employee"], id_employee = id)
+    
+    def edit_employee(self, id):
+        return self.db.execute(self.__scripts["edit"], employee_id = id).fetchone()
+
