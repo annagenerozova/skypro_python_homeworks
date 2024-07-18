@@ -13,7 +13,7 @@ class EmployeeApi:
         resp = requests.post(self.url + '/auth/login', json=creds)
         return resp.json()["userToken"]
     
-    # список сотрудников компании 
+# список сотрудников компании 
     def get_staff_list(self, id):
         company = {
             'company': str(id)
@@ -46,18 +46,20 @@ class EmployeeApi:
         resp = requests.get(self.url + '/employee/' + str(id))
         return resp.json()
     
-    def edit(self, new_id, new_lname ="Sokolova", email = "test123@mail.ru", 
-             url ="https://instagram.com/_anna.roze", phone ="89218308966", isActive = True):
+    def edit(self, new_lname ="Sokolova", email = "test123@mail.ru", url ='https://t.me/gener_ann', 
+             phone ="89218308966", isActive = True):
         my_headers = {}
+        # Авторизуемся как пользователь
         my_headers["x-client-token"] = self.get_token()
+        # Вызываем словарь и кладем в него описание компании
         employee = {
             "lastName": new_lname,
             "email": email,
             "url": url,
             "phone": phone,
             "isActive": isActive
-        }
-        resp = requests.patch(self.url + '/employee/' + str(new_id) ,json=employee, headers=my_headers)
-        return resp
-    
-    
+            }
+        # Метод отправляет запрос по URL, передает заголовки и тело
+        resp = requests.post(self.url + '/employee',json=employee, headers=my_headers)
+        # Результат вернется в JSON, мы его прокинем в тест
+        return resp()
