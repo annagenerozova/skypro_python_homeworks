@@ -45,4 +45,3 @@ class EmployeeTable:
     
     def edit_employee(self, id):
         return self.db.execute(self.__scripts["edit"], employee_id = id).fetchone()
-

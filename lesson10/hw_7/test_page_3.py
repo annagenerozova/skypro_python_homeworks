@@ -27,16 +27,3 @@ def test_shop():
     result_page.result()
 
     browser.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-

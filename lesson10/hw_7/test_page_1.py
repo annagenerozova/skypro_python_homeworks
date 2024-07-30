@@ -23,6 +23,4 @@ def test_form_submission():
     result_page.color()
     
     browser.quit()
-
-
    

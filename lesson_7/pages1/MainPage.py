@@ -25,3 +25,4 @@ class MainPage:
         self._driver.find_element(By.CSS_SELECTOR, '[name="company"]').send_keys("SkyPro")
 
         self._driver.find_element(By.CSS_SELECTOR, "button").click()
+    

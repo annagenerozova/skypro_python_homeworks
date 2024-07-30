@@ -79,9 +79,3 @@ def test_edit_employee():
     assert update["id"] == id_employee
     assert update["email"] == "test123@mail.ru"
     assert update["last_name"] == "Sokolova"
-
-
-
-
-
-

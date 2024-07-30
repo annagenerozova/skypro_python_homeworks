@@ -17,5 +17,3 @@ class CardPage:
         button_basket = waiter.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a.shopping_cart_link'))).click() 
         button_checkout = waiter.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#checkout'))).click()
         
-
-    
