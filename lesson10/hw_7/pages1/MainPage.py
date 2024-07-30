@@ -1,4 +1,7 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+import allure
 
 class MainPage:
     
@@ -8,6 +11,7 @@ class MainPage:
         self._driver.implicitly_wait(4)
         self._driver.maximize_window()
     
+    @allure.step("Найти поля и внести в них данные")
     def field(self):
         self._driver.find_element(By.CSS_SELECTOR, '[name="first-name"]').send_keys("Иван")
         self._driver.find_element(By.CSS_SELECTOR, '[name="last-name"]').send_keys("Петров")
@@ -25,4 +29,3 @@ class MainPage:
         self._driver.find_element(By.CSS_SELECTOR, '[name="company"]').send_keys("SkyPro")
 
         self._driver.find_element(By.CSS_SELECTOR, "button").click()
-    

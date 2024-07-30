@@ -1,0 +1,7 @@
+allure-pytest==2.30.0
+allure-python-commons==2.13.5
+psycopg2-binary==2.9.9
+pytest==8.2.1
+requests==2.31.0
+selenium==4.23.0
+SQLAlchemy==2.0.31

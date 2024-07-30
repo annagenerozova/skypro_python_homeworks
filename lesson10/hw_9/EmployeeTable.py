@@ -1,3 +1,4 @@
+import allure
 import requests
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
@@ -25,23 +26,28 @@ class EmployeeTable:
     def __init__(self, connection_string):
         self.db = create_engine(connection_string)
     
-    #список сотрудников компании
+    @allure.step("БД. Запросить список сотрудников компании")
     def get_employees(self,id):
         return self.db.execute(self.__scripts["select"],id_company=id).fetchall()    
     
-    #добавление сотрудника 
+    @allure.step("БД. Создать сотрудника с уникальным {id}")
     def create_employee(self,id):
         return self.db.execute(self.__scripts["insert"],id_company=id).fetchone()
     
+    @allure.step("БД.Получение сотрудника по {id}")
     #получение сотрудника по id
     def get_employee_id(self, id):
         return self.db.execute(self.__scripts["select by id"], select_id = id).fetchone()
-
+    
+    @allure.step("БД. Удалить организацию по {id}")
     def delete(self, id):
         self.db.execute(self.__scripts["delete company"], id_to_delete = id)
     
+    @allure.step("БД. Удалить сотрудника по {id}")
     def delete_emp(self, id):
         self.db.execute(self.__scripts["delete employee"], id_employee = id)
     
+    @allure.step("БД. Редактирование сотрудника по {id}")
     def edit_employee(self, id):
         return self.db.execute(self.__scripts["edit"], employee_id = id).fetchone()
+

@@ -1,10 +1,13 @@
+import allure
 import requests
+
 
 class EmployeeApi: 
     # Инициализация 
     def __init__(self, url) -> None:
         self.url = url
     
+    @allure.step("api. Получить токен авторизации для пользователя {user}:{password}")
     def get_token(self, user='bloom', password='fire-fairy'):
         creds = {
             "username": user,
@@ -13,7 +16,7 @@ class EmployeeApi:
         resp = requests.post(self.url + '/auth/login', json=creds)
         return resp.json()["userToken"]
     
-# список сотрудников компании 
+    @allure.step("api.получаем список сотрудников компании по {id}")
     def get_staff_list(self, id):
         company = {
             'company': str(id)
@@ -21,7 +24,7 @@ class EmployeeApi:
         resp = requests.get(self.url + '/employee' ,params=company )
         return resp.json()
     
-    #добавление сотрудника 
+    @allure.step("api. добавляем сотрудника в компанию {companyId} {firstName} {lastName} {middleName} {email} {url}{phone}{birthdate}{isActive}") 
     def create_employee(self, companyId, firstName, lastName , middleName,
                         email , url, phone, 
                         birthdate, isActive ):
@@ -42,10 +45,12 @@ class EmployeeApi:
         resp = requests.post(self.url + '/employee',json=employee, headers=my_headers)
         return resp
     
+    @allure.step("api. Получить сотрудника по {id}")
     def get_employee(self, id):
         resp = requests.get(self.url + '/employee/' + str(id))
         return resp.json()
     
+    @allure.step("api. Редактировать сотрудника {id} {new_lname}{email}{url}{phone}{phone}{isActive}")
     def edit(self, id, new_lname, email, 
              url, phone , isActive ):
         employee = {
